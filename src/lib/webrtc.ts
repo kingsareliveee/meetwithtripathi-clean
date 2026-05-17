@@ -4,6 +4,11 @@ import type { RealtimeChannel } from "@supabase/supabase-js";
 const ICE_SERVERS: RTCIceServer[] = [
   { urls: "stun:stun.l.google.com:19302" },
   { urls: "stun:stun1.l.google.com:19302" },
+  {
+    urls: "turn:openrelay.metered.ca:80",
+    username: "openrelayproject",
+    credential: "openrelayproject",
+  },
 ];
 
 export interface RemotePeer {
@@ -74,8 +79,18 @@ export class WebRTCManager {
 
     channel.on("presence", { event: "join" }, ({ key }) => {
       if (key === this.userId || this.peers.has(key)) return;
-      // Tie-break: lower userId initiates the offer
-      if (this.userId < key) void this.callPeer(key);
+      try {
+        const state = channel.presenceState<{ user_id: string; at: number }>();
+        const theirMeta = state[key]?.[0];
+        const myMeta = state[this.userId]?.[0];
+        const myAt = myMeta?.at ?? Date.now();
+        const theirAt = theirMeta?.at ?? Date.now();
+        // Later joiner should initiate the offer
+        if (myAt > theirAt) void this.callPeer(key);
+      } catch (err) {
+        // Fallback to previous tie-break if presence metadata unavailable
+        if (this.userId < key) void this.callPeer(key);
+      }
     });
 
     channel.on("presence", { event: "leave" }, ({ key }) => {
@@ -90,7 +105,16 @@ export class WebRTCManager {
           const state = channel.presenceState<{ user_id: string }>();
           for (const key of Object.keys(state)) {
             if (key === this.userId || this.peers.has(key)) continue;
-            if (this.userId < key) void this.callPeer(key);
+            try {
+              const theirMeta = state[key]?.[0] as { user_id: string; at: number } | undefined;
+              const myMeta = state[this.userId]?.[0] as { user_id: string; at: number } | undefined;
+              const myAt = myMeta?.at ?? Date.now();
+              const theirAt = theirMeta?.at ?? Date.now();
+              // Later joiner should initiate the offer
+              if (myAt > theirAt) void this.callPeer(key);
+            } catch (err) {
+              if (this.userId < key) void this.callPeer(key);
+            }
           }
           resolve();
         }
