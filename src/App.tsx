@@ -10,7 +10,7 @@ function parseRoomCode(pathname: string) {
 }
 
 function App() {
-  const { setRoomCode } = useMeetingStore();
+  const { setRoomCode, userName } = useMeetingStore();
   const [roomCode, setRoomCodeState] = useState(() => parseRoomCode(window.location.pathname));
 
   useEffect(() => {
@@ -38,7 +38,7 @@ function App() {
   const handleJoin = (code: string) => navigateToRoom(code.trim());
 
   if (roomCode) {
-    return <MeetingPage roomCode={roomCode} onLeave={goHome} />;
+    return <MeetingPage roomCode={roomCode} userName={userName || "Anonymous"} onLeave={goHome} />;
   }
 
   return <HomePage onCreate={handleCreate} onJoin={handleJoin} />;

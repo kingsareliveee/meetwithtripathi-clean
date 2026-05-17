@@ -1,97 +1,644 @@
-@import "tailwindcss" source(none);
-@source "../src";
-@import "tw-animate-css";
+/* ============================================================
+   src/styles.css
+   Component utilities + animations
+   Imported by index.css — do NOT add @import "tailwindcss" here
+   ============================================================ */
 
-@custom-variant dark (&:is(.dark *));
+/* ================================================================
+   COMPONENT LAYER
+   Add any of these class names to your JSX/TSX to get the
+   reference UI look instantly — no other changes needed.
+   ================================================================ */
+@layer components {
 
-@theme inline {
-  --radius-sm: calc(var(--radius) - 4px);
-  --radius-md: calc(var(--radius) - 2px);
-  --radius-lg: var(--radius);
-  --radius-xl: calc(var(--radius) + 4px);
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --color-card: var(--card);
-  --color-card-foreground: var(--card-foreground);
-  --color-popover: var(--popover);
-  --color-popover-foreground: var(--popover-foreground);
-  --color-primary: var(--primary);
-  --color-primary-foreground: var(--primary-foreground);
-  --color-secondary: var(--secondary);
-  --color-secondary-foreground: var(--secondary-foreground);
-  --color-muted: var(--muted);
-  --color-muted-foreground: var(--muted-foreground);
-  --color-accent: var(--accent);
-  --color-accent-foreground: var(--accent-foreground);
-  --color-destructive: var(--destructive);
-  --color-destructive-foreground: var(--destructive-foreground);
-  --color-border: var(--border);
-  --color-input: var(--input);
-  --color-ring: var(--ring);
-  --color-success: var(--success);
-  --color-success-foreground: var(--success-foreground);
+  /* ── Buttons ─────────────────────────────────────────────────── */
 
-  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
-  --font-display: "Space Grotesk", ui-sans-serif, system-ui, sans-serif;
-
-  --shadow-glow: 0 0 0 1px color-mix(in oklab, var(--primary) 40%, transparent),
-    0 10px 40px -10px color-mix(in oklab, var(--primary) 50%, transparent);
-}
-
-:root {
-  --radius: 0.875rem;
-
-  /* Modern dark UI by default */
-  --background: oklch(0.16 0.015 265);
-  --foreground: oklch(0.97 0.005 250);
-
-  --card: oklch(0.21 0.018 265);
-  --card-foreground: oklch(0.97 0.005 250);
-
-  --popover: oklch(0.19 0.018 265);
-  --popover-foreground: oklch(0.97 0.005 250);
-
-  --primary: oklch(0.74 0.16 165);
-  --primary-foreground: oklch(0.16 0.02 200);
-
-  --secondary: oklch(0.27 0.02 265);
-  --secondary-foreground: oklch(0.97 0.005 250);
-
-  --muted: oklch(0.24 0.018 265);
-  --muted-foreground: oklch(0.68 0.025 260);
-
-  --accent: oklch(0.32 0.04 200);
-  --accent-foreground: oklch(0.97 0.005 250);
-
-  --destructive: oklch(0.62 0.22 25);
-  --destructive-foreground: oklch(0.98 0.01 250);
-
-  --success: oklch(0.74 0.16 165);
-  --success-foreground: oklch(0.16 0.02 200);
-
-  --border: oklch(0.28 0.02 265);
-  --input: oklch(0.26 0.02 265);
-  --ring: oklch(0.74 0.16 165);
-}
-
-@layer base {
-  * {
-    border-color: var(--color-border);
-  }
-  html, body {
-    background-color: var(--color-background);
-    color: var(--color-foreground);
-    font-family: var(--font-sans);
-    -webkit-font-smoothing: antialiased;
-  }
-  body {
-    background-image:
-      radial-gradient(1000px 500px at 10% -10%, oklch(0.74 0.16 165 / 0.08), transparent 60%),
-      radial-gradient(800px 400px at 100% 0%, oklch(0.65 0.18 290 / 0.08), transparent 60%);
-    background-attachment: fixed;
-  }
-  h1, h2, h3, h4 {
-    font-family: var(--font-display);
+  /*
+   * .btn-primary  →  dark navy pill  (like "Start a Meeting" in reference)
+   * Usage: <button className="btn-primary">Start a Meeting</button>
+   */
+  .btn-primary {
+    display:       inline-flex;
+    align-items:   center;
+    gap:           0.5rem;
+    padding:       0.625rem 1.5rem;
+    background:    var(--color-primary);
+    color:         var(--color-primary-foreground);
+    border:        none;
+    border-radius: 9999px;
+    font-family:   var(--font-sans);
+    font-size:     0.9rem;
+    font-weight:   600;
     letter-spacing: -0.01em;
+    white-space:   nowrap;
+    box-shadow:    0 2px 10px rgb(0 0 0 / 0.15);
+    transition:    background 180ms ease, box-shadow 180ms ease, transform 120ms ease;
   }
+  .btn-primary:hover {
+    background: oklch(0.26 0.025 265);
+    box-shadow: 0 4px 18px rgb(0 0 0 / 0.20);
+    transform:  translateY(-1px);
+  }
+  .btn-primary:active  { transform: translateY(0); box-shadow: none; }
+  .btn-primary:disabled {
+    opacity: 0.45;
+    pointer-events: none;
+  }
+
+  /*
+   * .btn-secondary  →  light ghost pill
+   */
+  .btn-secondary {
+    display:       inline-flex;
+    align-items:   center;
+    gap:           0.4rem;
+    padding:       0.575rem 1.25rem;
+    background:    var(--color-card);
+    color:         var(--color-foreground);
+    border:        1px solid var(--color-border);
+    border-radius: 9999px;
+    font-size:     0.875rem;
+    font-weight:   500;
+    box-shadow:    0 1px 3px rgb(0 0 0 / 0.05);
+    transition:    background 140ms ease, box-shadow 140ms ease, transform 120ms ease;
+  }
+  .btn-secondary:hover {
+    background: var(--color-muted);
+    box-shadow: 0 2px 8px rgb(0 0 0 / 0.07);
+    transform:  translateY(-1px);
+  }
+  .btn-secondary:active  { transform: translateY(0); }
+  .btn-secondary:disabled { opacity: 0.45; pointer-events: none; }
+
+  /*
+   * .btn-success  →  green CTA
+   */
+  .btn-success {
+    display:       inline-flex;
+    align-items:   center;
+    gap:           0.5rem;
+    padding:       0.625rem 1.5rem;
+    background:    var(--color-success);
+    color:         var(--color-success-foreground);
+    border:        none;
+    border-radius: 9999px;
+    font-size:     0.9rem;
+    font-weight:   600;
+    box-shadow:    0 2px 10px color-mix(in oklab, var(--success) 35%, transparent);
+    transition:    background 160ms ease, box-shadow 160ms ease, transform 120ms ease;
+  }
+  .btn-success:hover {
+    background: oklch(0.65 0.17 155);
+    box-shadow: 0 4px 16px color-mix(in oklab, var(--success) 40%, transparent);
+    transform:  translateY(-1px);
+  }
+  .btn-success:active { transform: translateY(0); }
+
+  /*
+   * .btn-destructive  →  coral/red (end call)
+   */
+  .btn-destructive {
+    display:         inline-flex;
+    align-items:     center;
+    justify-content: center;
+    padding:         0.625rem 1.5rem;
+    background:      var(--color-destructive);
+    color:           var(--color-destructive-foreground);
+    border:          none;
+    border-radius:   9999px;
+    font-size:       0.9rem;
+    font-weight:     600;
+    box-shadow:      0 4px 14px color-mix(in oklab, var(--destructive) 32%, transparent);
+    transition:      background 150ms ease, transform 120ms ease;
+  }
+  .btn-destructive:hover  { background: oklch(0.54 0.22 25); transform: scale(1.04); }
+  .btn-destructive:active { transform: scale(0.97); }
+
+  /*
+   * .btn-icon  →  round icon button (mic, cam, chat…)
+   */
+  .btn-icon {
+    display:         inline-flex;
+    align-items:     center;
+    justify-content: center;
+    width:           2.75rem;
+    height:          2.75rem;
+    background:      var(--color-card);
+    color:           var(--color-foreground);
+    border:          1px solid var(--color-border);
+    border-radius:   9999px;
+    box-shadow:      0 1px 4px rgb(0 0 0 / 0.06);
+    transition:      background 140ms ease, transform 120ms ease;
+    flex-shrink:     0;
+  }
+  .btn-icon:hover  { background: var(--color-muted); transform: scale(1.06); }
+  .btn-icon:active { transform: scale(0.95); }
+
+  /* .btn-icon--dark  →  dark filled variant (used for "more" button) */
+  .btn-icon--dark {
+    background: var(--color-primary);
+    color:      var(--color-primary-foreground);
+    border-color: var(--color-primary);
+  }
+  .btn-icon--dark:hover { background: oklch(0.26 0.025 265); }
+
+  /* .btn-icon--end  →  coral end-call icon */
+  .btn-icon--end {
+    background:  var(--color-destructive);
+    color:       var(--color-destructive-foreground);
+    border-color: var(--color-destructive);
+    box-shadow:  0 4px 14px color-mix(in oklab, var(--destructive) 32%, transparent);
+  }
+  .btn-icon--end:hover { background: oklch(0.54 0.22 25); transform: scale(1.06); }
+
+  /* ── Cards ───────────────────────────────────────────────────── */
+
+  /*
+   * .card  →  standard white card with shadow
+   * Usage:  <div className="card p-4">...</div>
+   */
+  .card {
+    background:    var(--color-card);
+    border-radius: var(--radius-xl);
+    border:        1px solid var(--color-border);
+    box-shadow:    0 2px 12px rgb(0 0 0 / 0.06), 0 1px 3px rgb(0 0 0 / 0.04);
+    transition:    box-shadow 200ms ease, transform 200ms ease;
+  }
+
+  /*
+   * .card-hover  →  adds lift on hover (for meeting cards, stat chips etc.)
+   */
+  .card-hover:hover {
+    box-shadow: 0 10px 28px rgb(0 0 0 / 0.10), 0 4px 8px rgb(0 0 0 / 0.05);
+    transform:  translateY(-2px);
+  }
+
+  /*
+   * .card-float  →  hero / meeting banner (darker bg, prominent shadow)
+   */
+  .card-float {
+    background:    var(--color-card);
+    border-radius: calc(var(--radius) + 6px);
+    border:        1px solid oklch(0.90 0.006 260);
+    box-shadow:    0 8px 32px rgb(0 0 0 / 0.12), 0 2px 8px rgb(0 0 0 / 0.06);
+    overflow:      hidden;
+  }
+
+  /* ── Navigation ─────────────────────────────────────────────── */
+
+  /*
+   * .nav-icon  →  round icon button in top nav (notification bell, menu…)
+   */
+  .nav-icon {
+    position:        relative;
+    display:         inline-flex;
+    align-items:     center;
+    justify-content: center;
+    width:           2.25rem;
+    height:          2.25rem;
+    background:      var(--color-card);
+    border:          1px solid var(--color-border);
+    border-radius:   9999px;
+    box-shadow:      0 1px 3px rgb(0 0 0 / 0.05);
+    cursor:          pointer;
+    transition:      background 130ms ease;
+    flex-shrink:     0;
+  }
+  .nav-icon:hover { background: var(--color-muted); }
+
+  /* Notification dot inside .nav-icon */
+  .nav-icon .notif-dot {
+    position:      absolute;
+    top:           0.28rem;
+    right:         0.28rem;
+    width:         7px;
+    height:        7px;
+    background:    oklch(0.72 0.19 5);
+    border-radius: 9999px;
+    border:        2px solid var(--color-card);
+  }
+
+  /* ── Control bar (floating pill at bottom of call screen) ────── */
+  .control-bar {
+    display:         flex;
+    align-items:     center;
+    justify-content: center;
+    gap:             0.625rem;
+    padding:         0.75rem 1.5rem;
+    background:      var(--color-card);
+    border-radius:   9999px;
+    border:          1px solid var(--color-border);
+    box-shadow:      0 8px 32px rgb(0 0 0 / 0.12), 0 2px 8px rgb(0 0 0 / 0.06);
+  }
+
+  /* ── Video tiles ─────────────────────────────────────────────── */
+
+  /*
+   * .video-tile  →  rounded video panel
+   */
+  .video-tile {
+    position:      relative;
+    border-radius: calc(var(--radius) + 4px);
+    overflow:      hidden;
+    background:    oklch(0.20 0.015 265);
+    box-shadow:    0 4px 16px rgb(0 0 0 / 0.09);
+    transition:    box-shadow 200ms ease;
+  }
+  .video-tile:hover { box-shadow: 0 12px 32px rgb(0 0 0 / 0.14); }
+
+  /*
+   * .tile-name  →  frosted name label at bottom of video tile
+   */
+  .tile-name {
+    position:        absolute;
+    bottom:          0.5rem;
+    left:            0.5rem;
+    display:         inline-flex;
+    align-items:     center;
+    gap:             0.3rem;
+    padding:         0.2rem 0.6rem;
+    background:      rgb(0 0 0 / 0.50);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border-radius:   9999px;
+    color:           #fff;
+    font-size:       0.72rem;
+    font-weight:     600;
+  }
+  .tile-name .online-dot {
+    width:         5px;
+    height:        5px;
+    border-radius: 9999px;
+    background:    var(--color-success);
+    flex-shrink:   0;
+  }
+
+  /*
+   * .subtitle-overlay  →  frosted subtitle bar on main video
+   */
+  .subtitle-overlay {
+    display:         inline-flex;
+    align-items:     center;
+    gap:             0.5rem;
+    padding:         0.4rem 0.875rem;
+    background:      rgb(0 0 0 / 0.50);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-radius:   9999px;
+    color:           #fff;
+    font-size:       0.78rem;
+    font-weight:     500;
+    max-width:       max-content;
+  }
+
+  /* ── Badges / pills ─────────────────────────────────────────── */
+
+  /*
+   * .badge-live  →  "● Live  Now" pill with animated dot
+   */
+  .badge-live {
+    display:        inline-flex;
+    align-items:    center;
+    gap:            0.35rem;
+    padding:        0.22rem 0.7rem;
+    background:     var(--color-card);
+    border:         1px solid var(--color-border);
+    border-radius:  9999px;
+    font-size:      0.68rem;
+    font-weight:    700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    box-shadow:     0 1px 4px rgb(0 0 0 / 0.06);
+    color:          var(--color-foreground);
+    white-space:    nowrap;
+  }
+  .badge-live::before {
+    content:       "";
+    display:       block;
+    width:         7px;
+    height:        7px;
+    border-radius: 9999px;
+    background:    var(--color-success);
+    animation:     live-pulse 2s ease infinite;
+    flex-shrink:   0;
+  }
+
+  /*
+   * .badge  →  generic status badge
+   */
+  .badge {
+    display:       inline-flex;
+    align-items:   center;
+    gap:           0.25rem;
+    padding:       0.15rem 0.55rem;
+    border-radius: 9999px;
+    font-size:     0.7rem;
+    font-weight:   600;
+    letter-spacing: 0.02em;
+  }
+  .badge-success {
+    background: color-mix(in oklab, var(--success) 14%, transparent);
+    color:      oklch(0.50 0.17 155);
+  }
+  .badge-destructive {
+    background: color-mix(in oklab, var(--destructive) 14%, transparent);
+    color:      oklch(0.45 0.20 25);
+  }
+  .badge-muted {
+    background: var(--color-muted);
+    color:      var(--color-muted-foreground);
+  }
+
+  /* ── Stat chips ─────────────────────────────────────────────── */
+
+  /*
+   * .stat-chip  →  "12  Meeting Today" box
+   */
+  .stat-chip {
+    display:        flex;
+    flex-direction: column;
+    gap:            0.1rem;
+    padding:        0.75rem 0.875rem;
+    background:     var(--color-card);
+    border-radius:  var(--radius-lg);
+    border:         1px solid var(--color-border);
+    box-shadow:     0 1px 4px rgb(0 0 0 / 0.05);
+  }
+  .stat-chip .stat-val {
+    font-family:  var(--font-display);
+    font-size:    1.2rem;
+    font-weight:  700;
+    line-height:  1;
+    color:        var(--color-foreground);
+  }
+  .stat-chip .stat-lbl {
+    font-size:   0.7rem;
+    font-weight: 500;
+    color:       var(--color-muted-foreground);
+    white-space: nowrap;
+  }
+
+  /* ── Avatar stack ───────────────────────────────────────────── */
+
+  /*
+   * .avatar-stack  →  overlapping avatar row
+   */
+  .avatar-stack { display: flex; align-items: center; }
+  .avatar-stack .av {
+    width:         1.75rem;
+    height:        1.75rem;
+    border-radius: 9999px;
+    border:        2px solid var(--color-card);
+    object-fit:    cover;
+    margin-left:   -0.45rem;
+    box-shadow:    0 1px 3px rgb(0 0 0 / 0.08);
+    flex-shrink:   0;
+  }
+  .avatar-stack .av:first-child { margin-left: 0; }
+  .avatar-stack .av-count {
+    display:         inline-flex;
+    align-items:     center;
+    justify-content: center;
+    width:           1.75rem;
+    height:          1.75rem;
+    border-radius:   9999px;
+    border:          2px solid var(--color-card);
+    background:      var(--color-secondary);
+    color:           var(--color-secondary-foreground);
+    font-size:       0.65rem;
+    font-weight:     600;
+    margin-left:     -0.45rem;
+  }
+
+  /* ── Meeting card ───────────────────────────────────────────── */
+
+  /*
+   * .meeting-card  →  individual meeting tile
+   */
+  .meeting-card {
+    display:        flex;
+    flex-direction: column;
+    gap:            0.625rem;
+    padding:        0.875rem;
+    background:     var(--color-card);
+    border-radius:  calc(var(--radius) + 4px);
+    border:         1px solid var(--color-border);
+    box-shadow:     0 2px 12px rgb(0 0 0 / 0.06);
+    transition:     box-shadow 200ms ease, transform 200ms ease;
+    cursor:         pointer;
+  }
+  .meeting-card:hover {
+    box-shadow: 0 8px 24px rgb(0 0 0 / 0.10);
+    transform:  translateY(-2px);
+  }
+
+  /* ── Online indicator ───────────────────────────────────────── */
+
+  /*
+   * .online-pill  →  "● Online" text with animated green dot
+   */
+  .online-pill {
+    display:     inline-flex;
+    align-items: center;
+    gap:         0.3rem;
+    font-size:   0.75rem;
+    font-weight: 600;
+    color:       var(--color-success);
+  }
+  .online-pill::before {
+    content:       "";
+    display:       block;
+    width:         7px;
+    height:        7px;
+    border-radius: 9999px;
+    background:    var(--color-success);
+    animation:     live-pulse 2s ease infinite;
+  }
+
+  /* ── Participant row ─────────────────────────────────────────── */
+  .participant-row {
+    display:     flex;
+    align-items: center;
+    gap:         0.625rem;
+    padding:     0.45rem 0;
+  }
+  .participant-row .p-name {
+    flex:        1;
+    font-size:   0.875rem;
+    font-weight: 500;
+  }
+  .participant-row .p-role {
+    font-size: 0.75rem;
+    color:     var(--color-muted-foreground);
+  }
+
+  /* ── Skeleton loader ─────────────────────────────────────────── */
+  .skeleton {
+    background: linear-gradient(
+      90deg,
+      var(--color-muted)   25%,
+      color-mix(in oklab, var(--color-muted) 55%, white) 50%,
+      var(--color-muted)   75%
+    );
+    background-size: 200% 100%;
+    animation:       skeleton-sweep 1.5s ease infinite;
+    border-radius:   var(--radius-sm);
+    color:           transparent !important;
+    user-select:     none;
+    pointer-events:  none;
+  }
+
+  /* ── Section header ─────────────────────────────────────────── */
+  .section-header {
+    display:         flex;
+    align-items:     center;
+    justify-content: space-between;
+    margin-bottom:   0.75rem;
+  }
+  .section-header h2,
+  .section-header h3 {
+    font-size:   1rem;
+    font-weight: 700;
+  }
+  .section-header .view-all {
+    font-size:   0.78rem;
+    font-weight: 600;
+    color:       var(--color-success);
+    background:  none;
+    border:      none;
+    padding:     0;
+    cursor:      pointer;
+    transition:  opacity 120ms;
+  }
+  .section-header .view-all:hover { opacity: 0.72; }
+
+  /* ── Page / screen wrapper ───────────────────────────────────── */
+
+  /*
+   * .screen  →  full-height page with padding
+   */
+  .screen {
+    min-height:     100dvh;
+    padding:        1rem;
+    display:        flex;
+    flex-direction: column;
+    gap:            1rem;
+  }
+
+  /*
+   * .screen-center  →  vertically + horizontally centered screen
+   */
+  .screen-center {
+    min-height:      100dvh;
+    display:         flex;
+    align-items:     center;
+    justify-content: center;
+    padding:         1.5rem;
+  }
+
+  /* ── Input (standalone class) ───────────────────────────────── */
+  .input {
+    width:         100%;
+    padding:       0.6rem 0.875rem;
+    background:    var(--color-input);
+    color:         var(--color-foreground);
+    border:        1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    font-family:   var(--font-sans);
+    font-size:     0.9rem;
+    outline:       none;
+    transition:    border-color 150ms ease, box-shadow 150ms ease;
+  }
+  .input::placeholder { color: var(--color-muted-foreground); }
+  .input:focus {
+    border-color: var(--ring);
+    box-shadow:   0 0 0 3px color-mix(in oklab, var(--ring) 18%, transparent);
+  }
+
+  /* ── Divider ─────────────────────────────────────────────────── */
+  .divider {
+    width:      100%;
+    height:     1px;
+    background: var(--color-border);
+    border:     none;
+    margin:     0;
+  }
+}
+
+/* ================================================================
+   UTILITY LAYER
+   Single-purpose helpers you can compose in JSX
+   ================================================================ */
+@layer utilities {
+  /* Text */
+  .text-success     { color: var(--color-success); }
+  .text-muted       { color: var(--color-muted-foreground); }
+  .text-destructive { color: var(--color-destructive); }
+  .text-display     { font-family: var(--font-display); }
+
+  /* Backgrounds */
+  .bg-success-subtle     { background: color-mix(in oklab, var(--success) 12%, transparent); }
+  .bg-destructive-subtle { background: color-mix(in oklab, var(--destructive) 12%, transparent); }
+  .bg-primary-subtle     { background: color-mix(in oklab, var(--primary) 10%, transparent); }
+
+  /* Shadows */
+  .shadow-card  { box-shadow: 0 2px 12px rgb(0 0 0 / 0.06), 0 1px 3px rgb(0 0 0 / 0.04); }
+  .shadow-float { box-shadow: 0 8px 32px rgb(0 0 0 / 0.12), 0 2px 8px rgb(0 0 0 / 0.06); }
+
+  /* Radius */
+  .rounded-pill { border-radius: 9999px; }
+
+  /* Frosted glass */
+  .frosted {
+    backdrop-filter:         blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+  }
+
+  /* Animation helpers */
+  .animate-fade-up  { animation: fade-up  300ms cubic-bezier(0.22, 1, 0.36, 1) both; }
+  .animate-fade-in  { animation: fade-in  240ms ease both; }
+  .animate-scale-in { animation: scale-in 260ms cubic-bezier(0.22, 1, 0.36, 1) both; }
+
+  .delay-75  { animation-delay:  75ms; }
+  .delay-150 { animation-delay: 150ms; }
+  .delay-225 { animation-delay: 225ms; }
+  .delay-300 { animation-delay: 300ms; }
+}
+
+/* ================================================================
+   KEYFRAMES
+   ================================================================ */
+@keyframes live-pulse {
+  0%, 100% { opacity: 1;    transform: scale(1);    }
+  50%       { opacity: 0.55; transform: scale(0.80); }
+}
+
+@keyframes skeleton-sweep {
+  0%   { background-position:  200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+@keyframes fade-up {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0);    }
+}
+
+@keyframes fade-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes scale-in {
+  from { opacity: 0; transform: scale(0.94); }
+  to   { opacity: 1; transform: scale(1);    }
+}
+
+@keyframes slide-up {
+  from { opacity: 0; transform: translateY(100%); }
+  to   { opacity: 1; transform: translateY(0);    }
+}
+
+@keyframes slide-down {
+  from { opacity: 0; transform: translateY(-100%); }
+  to   { opacity: 1; transform: translateY(0);     }
 }

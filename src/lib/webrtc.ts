@@ -45,6 +45,11 @@ export class WebRTCManager {
   setLocalStream(stream: MediaStream) {
     this.localStream = stream;
     // Replace tracks on existing peers (e.g. after screen share)
+    try {
+      console.debug("WebRTCManager.setLocalStream", { id: stream.id, tracks: stream.getTracks().map(t => ({ id: t.id, kind: t.kind })) });
+    } catch (err) {
+      console.debug("WebRTCManager.setLocalStream log failed", err);
+    }
     for (const pc of this.peers.values()) {
       const senders = pc.getSenders();
       stream.getTracks().forEach((track) => {
@@ -126,17 +131,31 @@ export class WebRTCManager {
     const pc = new RTCPeerConnection({ iceServers: ICE_SERVERS });
     this.peers.set(remoteUserId, pc);
 
+    // Ensure transceivers exist so audio/video are part of SDP even if tracks arrive later
+    try {
+      if (!pc.getTransceivers().some((t) => t.receiver.track && t.receiver.track.kind === "audio")) {
+        pc.addTransceiver("audio", { direction: "sendrecv" });
+      }
+      if (!pc.getTransceivers().some((t) => t.receiver.track && t.receiver.track.kind === "video")) {
+        pc.addTransceiver("video", { direction: "sendrecv" });
+      }
+    } catch (err) {
+      console.debug("addTransceiver failed or not supported", err);
+    }
+
     if (this.localStream) {
       this.localStream.getTracks().forEach((t) => pc.addTrack(t, this.localStream!));
     }
 
     pc.ontrack = (e) => {
       const stream = e.streams[0] ?? new MediaStream([e.track]);
+      console.debug("pc.ontrack", { from: remoteUserId, streamId: stream.id, tracks: stream.getTracks().map(t=>({ id: t.id, kind: t.kind })) });
       this.remoteStreams.set(remoteUserId, { userId: remoteUserId, stream });
       this.emit();
     };
 
     pc.onicecandidate = (e) => {
+      console.debug("pc.onicecandidate", { from: remoteUserId, candidate: e.candidate?.toJSON() });
       if (e.candidate) {
         void this.send({
           from: this.userId,
@@ -148,6 +167,7 @@ export class WebRTCManager {
     };
 
     pc.onconnectionstatechange = () => {
+      console.debug("pc.connectionState", { from: remoteUserId, state: pc.connectionState });
       if (
         pc.connectionState === "failed" ||
         pc.connectionState === "closed" ||
@@ -155,6 +175,34 @@ export class WebRTCManager {
       ) {
         this.removePeer(remoteUserId);
       }
+    };
+
+    // When connected, log sender stats to verify outbound audio is being transmitted
+    pc.addEventListener("connectionstatechange", async () => {
+      if (pc.connectionState === "connected") {
+        try {
+          const senders = pc.getSenders();
+          console.debug("pc.connected senders", { from: remoteUserId, senders: senders.map(s => ({ id: s.track?.id, kind: s.track?.kind })) });
+          for (const s of senders) {
+            try {
+              const stats = await s.getStats();
+              stats.forEach((report) => {
+                if (report.type === "outbound-rtp") {
+                  console.debug("outbound-rtp stats", { from: remoteUserId, kind: s.track?.kind, bytesSent: (report as any).bytesSent, packetsSent: (report as any).packetsSent });
+                }
+              });
+            } catch (e) {
+              console.warn("Failed to get sender stats", e);
+            }
+          }
+        } catch (err) {
+          console.warn("Failed to log senders on connect", err);
+        }
+      }
+    });
+
+    pc.oniceconnectionstatechange = () => {
+      console.debug("pc.iceConnectionState", { from: remoteUserId, iceState: pc.iceConnectionState, gathering: pc.iceGatheringState });
     };
 
     return pc;
