@@ -1,5 +1,27 @@
 {
-  "include": ["src/**/*.ts", "src/**/*.tsx", "vite.config.ts", "eslint.config.js"],
+  "include": [
+    "src/main.tsx",
+    "src/App.tsx",
+    "src/index.css",
+    "src/pages/**/*.tsx",
+    "src/components/ChatPanel.tsx",
+    "src/components/VideoTile.tsx",
+    "src/hooks/useMeetingRoom.ts",
+    "src/lib/supabase.ts",
+    "src/lib/utils.ts",
+    "src/store/useMeetingStore.ts"
+  ],
+  "exclude": [
+    "src/components/ui/**",
+    "src/integrations/**",
+    "src/routes/**",
+    "src/router.tsx",
+    "src/routeTree.gen.ts",
+    "src/server.ts",
+    "src/start.ts",
+    "src/lib/anonymous-meeting.ts",
+    "src/lib/call-analytics.ts"
+  ],
   "compilerOptions": {
     "target": "ES2022",
     "jsx": "react-jsx",
