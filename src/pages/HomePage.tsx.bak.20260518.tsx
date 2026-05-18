@@ -918,7 +918,7 @@ export default function HomePage({ onCreate, onJoin }: HomePageProps) {
                               setActiveTab("safety");
                               setMobileMenuOpen(false);
                             }}
-                            className="w-full text-left px-4 py-3 rounded-2xl text-xs font-extrabold uppercase tracking-widest text-slate-500 dark:text-slate-400 hover-text-slate-800 dark:hover:text-white hover:bg-white/60 dark:hover:bg-slate-800/40 transition"
+                            className="w-full text-left px-4 py-3 rounded-2xl text-xs font-extrabold uppercase tracking-widest text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-white hover:bg-white/60 dark:hover:bg-slate-800/40 transition"
                           >
                             Safety
                           </button>
@@ -953,9 +953,67 @@ export default function HomePage({ onCreate, onJoin }: HomePageProps) {
                 )}
               </AnimatePresence>
             </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </div>
-  );
-}
+
+            {/* 4. MOBILE HAMBURGER SLIDE MENU drawer */}
+            <AnimatePresence>
+              {mobileMenuOpen && (
+                <>
+                  <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    onClick={() => setMobileMenuOpen(false)}
+                    className="fixed inset-0 bg-slate-900/20 dark:bg-black/50 backdrop-blur-md z-45"
+                  />
+                  <motion.div
+                    initial={{ x: "100%" }}
+                    animate={{ x: "0%" }}
+                    exit={{ x: "100%" }}
+                    transition={{ type: "spring", damping: 26, stiffness: 220 }}
+                    className="fixed right-0 top-0 bottom-0 w-[75vw] max-w-sm bg-white/75 dark:bg-[#0f172a]/95 backdrop-blur-2xl border-l border-white/80 dark:border-slate-800/50 shadow-2xl p-8 z-50 flex flex-col justify-between"
+                  >
+                    <div className="space-y-8">
+                      <div className="flex items-center justify-between">
+                        <img src="/velora-logo.png" className="h-5.5 object-contain dark:invert" alt="Logo" />
+                        <button
+                          onClick={() => setMobileMenuOpen(false)}
+                          className="p-2 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-500 dark:text-slate-400 transition"
+                        >
+                          ✕
+                        </button>
+                      </div>
+
+                      <nav className="flex flex-col gap-3">
+                        <button
+                          onClick={() => {
+                            setActiveTab(null);
+                            setMobileMenuOpen(false);
+                          }}
+                          className="w-full text-left px-4 py-3 rounded-2xl text-xs font-extrabold uppercase tracking-widest text-slate-800 dark:text-slate-100 hover:bg-white/60 dark:hover:bg-slate-800/40 transition"
+                        >
+                          Home
+                        </button>
+                        <button
+                          onClick={() => {
+                            setActiveTab("features");
+                            setMobileMenuOpen(false);
+                          }}
+                          className="w-full text-left px-4 py-3 rounded-2xl text-xs font-extrabold uppercase tracking-widest text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-white hover:bg-white/60 dark:hover:bg-slate-800/40 transition"
+                        >
+                          Features
+                        </button>
+                        <button
+                          onClick={() => {
+                            setActiveTab("how-it-works");
+                            setMobileMenuOpen(false);
+                          }}
+                          className="w-full text-left px-4 py-3 rounded-2xl text-xs font-extrabold uppercase tracking-widest text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-white hover:bg-white/60 dark:hover:bg-slate-800/40 transition"
+                        >
+                          How It Works
+                        </button>
+                        <button
+                          onClick={() => {
+                            setActiveTab("safety");
+                            setMobileMenuOpen(false);
+                          }}
+                          className="w-full text-left px-4 py-3 rounded-2xl text-xs font-extrabold uppercase tracking-widest text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-white hover:bg-white/60 dark:hover:bg-slat...

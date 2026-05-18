@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
 import HomePage from "./pages/HomePage";
 import MeetingPage from "./pages/MeetingPage";
 import { useMeetingStore } from "./store/useMeetingStore";
@@ -37,11 +38,33 @@ function App() {
   const handleCreate = () => navigateToRoom(generateRoomCode());
   const handleJoin = (code: string) => navigateToRoom(code.trim());
 
-  if (roomCode) {
-    return <MeetingPage roomCode={roomCode} userName={userName || "Anonymous"} onLeave={goHome} />;
-  }
-
-  return <HomePage onCreate={handleCreate} onJoin={handleJoin} />;
+  return (
+    <AnimatePresence mode="wait" initial={false}>
+      {roomCode ? (
+        <motion.div
+          key={`meeting:${roomCode}`}
+          initial={{ opacity: 0, y: 10, filter: "blur(10px)" }}
+          animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+          exit={{ opacity: 0, y: -10, filter: "blur(10px)" }}
+          transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+          className="h-full"
+        >
+          <MeetingPage roomCode={roomCode} userName={userName || "Anonymous"} onLeave={goHome} />
+        </motion.div>
+      ) : (
+        <motion.div
+          key="home"
+          initial={{ opacity: 0, y: 10, filter: "blur(10px)" }}
+          animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+          exit={{ opacity: 0, y: -10, filter: "blur(10px)" }}
+          transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+          className="h-full"
+        >
+          <HomePage onCreate={handleCreate} onJoin={handleJoin} />
+        </motion.div>
+      )}
+    </AnimatePresence>
+  );
 }
 
 export default App;
