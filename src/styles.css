@@ -179,6 +179,8 @@
   .card-float {
     background:    var(--color-card);
     border-radius: calc(var(--radius) + 6px);
+    border:        1px solid rgb(229, 229, 230);
+    /* stylelint-disable-next-line property-no-unknown */
     border:        1px solid oklch(0.90 0.006 260);
     box-shadow:    0 8px 32px rgb(0 0 0 / 0.12), 0 2px 8px rgb(0 0 0 / 0.06);
     overflow:      hidden;
@@ -258,8 +260,8 @@
     gap:             0.3rem;
     padding:         0.2rem 0.6rem;
     background:      rgb(0 0 0 / 0.50);
-    backdrop-filter: blur(8px);
     -webkit-backdrop-filter: blur(8px);
+    backdrop-filter: blur(8px);
     border-radius:   9999px;
     color:           #fff;
     font-size:       0.72rem;
@@ -282,8 +284,8 @@
     gap:             0.5rem;
     padding:         0.4rem 0.875rem;
     background:      rgb(0 0 0 / 0.50);
-    backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
     border-radius:   9999px;
     color:           #fff;
     font-size:       0.78rem;
@@ -338,10 +340,14 @@
   }
   .badge-success {
     background: color-mix(in oklab, var(--success) 14%, transparent);
+    color:      rgb(34, 197, 94);
+    /* stylelint-disable-next-line property-no-unknown */
     color:      oklch(0.50 0.17 155);
   }
   .badge-destructive {
     background: color-mix(in oklab, var(--destructive) 14%, transparent);
+    color:      rgb(239, 68, 68);
+    /* stylelint-disable-next-line property-no-unknown */
     color:      oklch(0.45 0.20 25);
   }
   .badge-muted {
@@ -484,6 +490,7 @@
     animation:       skeleton-sweep 1.5s ease infinite;
     border-radius:   var(--radius-sm);
     color:           transparent !important;
+    -webkit-user-select: none;
     user-select:     none;
     pointer-events:  none;
   }
@@ -590,8 +597,8 @@
 
   /* Frosted glass */
   .frosted {
-    backdrop-filter:         blur(12px);
     -webkit-backdrop-filter: blur(12px);
+    backdrop-filter:         blur(12px);
   }
 
   /* Animation helpers */
@@ -715,19 +722,31 @@
 .glass-pane {
   background: rgba(255, 255, 255, 0.45);
   border: 1px solid rgba(255, 255, 255, 0.6);
-  backdrop-filter: blur(24px);
   -webkit-backdrop-filter: blur(24px);
+  backdrop-filter: blur(24px);
 }
 .dark .glass-pane {
   background: rgba(15, 23, 42, 0.45) !important;
   border: 1px solid rgba(255, 255, 255, 0.08) !important;
 }
 
+.radar-ring-delay-0 {
+  animation-delay: 0s;
+}
+
+.radar-ring-delay-1 {
+  animation-delay: 1s;
+}
+
+.radar-ring-delay-2 {
+  animation-delay: 2s;
+}
+
 .glass-card {
   background: rgba(255, 255, 255, 0.55);
   border: 1px solid rgba(255, 255, 255, 0.7);
-  backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
+  backdrop-filter: blur(16px);
 }
 .dark .glass-card {
   background: rgba(15, 23, 42, 0.55) !important;

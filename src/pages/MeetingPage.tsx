@@ -76,9 +76,9 @@ export default function MeetingPage({ roomCode, userName, onLeave }: MeetingPage
                 </div>
 
                 {/* PULSING RADAR GLOWS */}
-                <div className="absolute h-60 w-60 radar-ring pointer-events-none" style={{ animationDelay: "0s" }} />
-                <div className="absolute h-60 w-60 radar-ring pointer-events-none" style={{ animationDelay: "1s" }} />
-                <div className="absolute h-60 w-60 radar-ring pointer-events-none" style={{ animationDelay: "2s" }} />
+                <div className="absolute h-60 w-60 radar-ring pointer-events-none radar-ring-delay-0" />
+                <div className="absolute h-60 w-60 radar-ring pointer-events-none radar-ring-delay-1" />
+                <div className="absolute h-60 w-60 radar-ring pointer-events-none radar-ring-delay-2" />
 
                 <div className="absolute inset-0 bg-gradient-to-br from-pink-500/10 via-transparent to-indigo-500/10 blur-[120px] pointer-events-none" />
 
